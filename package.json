@@ -6,16 +6,18 @@
   "main": "app.js",
   "scripts": {
     "start": "node backend/app.js",
-    "dev":"SET_NODE_ENV=DEVELOPMENT& nodemon backend/app.js",
-    "prod":"SET_NODE_ENV=PRODUCTION& nodemon backend/app.js",
-    "seeder":"node backend/seeder/seeder.js"
-    
+    "dev": "SET_NODE_ENV=DEVELOPMENT& nodemon backend/app.js",
+    "prod": "SET_NODE_ENV=PRODUCTION& nodemon backend/app.js",
+    "seeder": "node backend/seeder/seeder.js"
   },
   "author": "Chahini",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.4"
   },
   "devDependencies": {

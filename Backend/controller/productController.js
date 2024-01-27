@@ -1,40 +1,60 @@
 import Product from "../model/product.js"
- export const getProducts = async (req,res)=>{
-    const products = await Product.find();
+import APIFilters from "../utils/apiFilter.js";
+import ErrorHandler from "../utils/errorHandler.js";
+import catchAsyncError from "../middlewares/catchAsyncError.js";
+
+
+
+ export const getProducts = catchAsyncError(async (req,res)=>{
+    const resPerPage = 4;
+    const apiFilters = new APIFilters(Product,req.query).search().filters();
+    let products = await apiFilters.query;
+    let filterProductCount=products.length;
+
+    apiFilters.pagination(resPerPage);
+    products = await apiFilters.query.clone();
+
+
+    //const products = await Product.find();
     res.status(200).json({
+        resPerPage,
+        filterProductCount,
         products,
     })
- }
+ })
 
- export const newProducts = async (req,res)=>{
+ export const newProducts = catchAsyncError(async (req,res)=>{
 
       const product = await Product.create(req.body)
 
     res.status(200).json({
         product,
     })
- }
+ })
 
  //Get  product details
 
- export const getProductDetails = async (req,res)=>{
+ export const getProductDetails = catchAsyncError(async (req,res,next)=>{
+    
     const product = await Product.findById(req?.params?.id)
 
     if(!product){
+        return next (new ErrorHandler("product not found",404))
+       // return res.status(404).json({
+           // error :"product not found"
+        //})
 
-    return res.status(404).json({
-        error :"product not found"
-    })}
+    }
 
     res.status(200).json({
         product,
     })
- }
+ })
 
 
  //update the products
 
- export const updateProduct = async (req,res)=>{
+ export const updateProduct = catchAsyncError(async (req,res)=>{
     let product = await Product.findById(req?.params?.id)
 
     if(!product){
@@ -48,16 +68,17 @@ import Product from "../model/product.js"
     res.status(200).json({
         product,
     })
- }
+ })
 
 
  
 
- export const deleteProduct = async (req,res)=>{
+ export const deleteProduct = catchAsyncError(async (req,res)=>{
     const product = await Product.findById(req?.params?.id)
 
     if(!product){
 
+       
     return res.status(404).json({
         error :"product not found"
     })}
@@ -67,4 +88,4 @@ import Product from "../model/product.js"
     res.status(200).json({
         message:"product deleted"
     })
- }
+ })
