@@ -3,8 +3,7 @@ console.log("hello")
 
 export const connectDatabase = async()=>{
     let DB_URI="";
-    console.log("hello in")
-
+   
     if(process.env.NODE_ENV==="DEVELOPMENT") DB_URI = process.env.DB_LOCAL_URI;
     if(process.env.NODE_ENV==="PRODUCTION") DB_URI = process.env.DB_URI;
 
@@ -12,7 +11,7 @@ export const connectDatabase = async()=>{
 
 
     mongoose.connect(DB_URI).then((con)=>{
-        console.log("hello mogo")
+       console.log("hello mogo")
         console.log(`Mongoose database is connected to host ${con?.connection?.host}`)
     })
 }

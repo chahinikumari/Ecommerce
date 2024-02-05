@@ -2,6 +2,7 @@ import express from "express";
 const app = express();
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
+//import { connectDatabase } from "./config/dbconnect.js"
 import { connectDatabase } from "./config/dbconnect.js"
 import errorMiddleware from "./middlewares/error.js";
 

@@ -5,11 +5,14 @@ import catchAsyncError from "../middlewares/catchAsyncError.js";
 
 
 
- export const getProducts = catchAsyncError(async (req,res)=>{
+ export const getProducts = catchAsyncError(async (req,res,next)=>{
     const resPerPage = 4;
     const apiFilters = new APIFilters(Product,req.query).search().filters();
+    console.log("req.user",req?.user)
     let products = await apiFilters.query;
     let filterProductCount=products.length;
+
+    //return next(new ErrorHandler("product error",404))
 
     apiFilters.pagination(resPerPage);
     products = await apiFilters.query.clone();
@@ -24,6 +27,9 @@ import catchAsyncError from "../middlewares/catchAsyncError.js";
  })
 
  export const newProducts = catchAsyncError(async (req,res)=>{
+
+    req.body.user = req.body._id
+    console.log(req.body.user)
 
       const product = await Product.create(req.body)
 
@@ -41,7 +47,7 @@ import catchAsyncError from "../middlewares/catchAsyncError.js";
     if(!product){
         return next (new ErrorHandler("product not found",404))
        // return res.status(404).json({
-           // error :"product not found"
+         //  error :"product not found"
         //})
 
     }
